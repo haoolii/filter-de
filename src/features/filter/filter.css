@@ -1,0 +1,19 @@
+.filter {
+    display: flex;
+}
+
+.tab {
+    display: flex;
+    flex-direction: column;
+    width: 140px;
+    padding: 12px;
+}
+
+.saveBtn {
+    padding-top: 20px;
+    margin-top: auto;
+}
+
+.saveBtn button {
+    width: 100%;
+}
