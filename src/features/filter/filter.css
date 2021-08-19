@@ -3,9 +3,24 @@
 }
 
 .tab {
+    
+}
+
+.opt {
     display: flex;
     flex-direction: column;
     width: 140px;
+    height: 300px;
+    overflow: auto;
+    padding: 12px;
+}
+
+.activated {
+    display: flex;
+    flex-direction: column;
+    width: 140px;
+    height: 300px;
+    overflow: auto;
     padding: 12px;
 }
 

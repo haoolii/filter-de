@@ -27,6 +27,10 @@ export interface FilterState {
   brandOptions: Array<string>;
   colorOptions: Array<string>;
   sizeOptions: Array<string>;
+  activatedTypesDict: Record<string, boolean>;
+  activatedBrandsDict: Record<string, boolean>;
+  activatedColorsDict: Record<string, boolean>;
+  activatedSizesDict: Record<string, boolean>;
 }
 
 const initialState: FilterState = {
@@ -135,11 +139,23 @@ const initialState: FilterState = {
       size: "27",
       color: "灰",
     },
+    {
+      id: 14,
+      name: "ACER-Aspires24",
+      type: "Desktop",
+      brand: "ACER",
+      size: "27",
+      color: "咖啡色",
+    },
   ],
   typeOptions: [],
   brandOptions: [],
   colorOptions: [],
-  sizeOptions: []
+  sizeOptions: [],
+  activatedTypesDict: {},
+  activatedBrandsDict: {},
+  activatedColorsDict: {},
+  activatedSizesDict: {},
 };
 
 export const filterSlice = createSlice({
@@ -160,8 +176,43 @@ export const filterSlice = createSlice({
         genDictWithKey(current(state.productList), "size")
       ).slice(0);
     },
+    toggle: (state, action) => {
+      let dict: Record<string, boolean> = {};
+
+      if (action.payload.optionType === "type") {
+        dict = { ...state.activatedTypesDict };
+      }
+      if (action.payload.optionType === "brand") {
+        dict = { ...state.activatedBrandsDict };
+      }
+      if (action.payload.optionType === "color") {
+        dict = { ...state.activatedColorsDict };
+      }
+      if (action.payload.optionType === "size") {
+        dict = { ...state.activatedSizesDict };
+      }
+
+      if (dict[action.payload.option]) {
+        delete dict[action.payload.option];
+      } else {
+        dict[action.payload.option] = true;
+      }
+
+      if (action.payload.optionType === "type") {
+        state.activatedTypesDict = dict;
+      }
+      if (action.payload.optionType === "brand") {
+        state.activatedBrandsDict = dict;
+      }
+      if (action.payload.optionType === "color") {
+        state.activatedColorsDict = dict;
+      }
+      if (action.payload.optionType === "size") {
+        state.activatedSizesDict = dict;
+      }
+    },
   },
 });
 
-export const { initOptions } = filterSlice.actions;
+export const { initOptions, toggle } = filterSlice.actions;
 export default filterSlice.reducer;
