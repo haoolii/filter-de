@@ -9,6 +9,10 @@ export interface Product {
   color: string;
 }
 
+function isInclude(arr: Array<string>, target: string) {
+  return arr.length ? arr.includes(target) : true;
+}
+
 function genDictWithKey<T>(list: Array<T>, key: keyof T) {
   const dict: Record<any, Array<T>> = {};
   for (let item of list) {
@@ -21,12 +25,65 @@ function genDictWithKey<T>(list: Array<T>, key: keyof T) {
   return dict;
 }
 
+interface OptionObj {
+  types: Array<string>;
+  brands: Array<string>;
+  colors: Array<string>;
+  sizes: Array<string>;
+}
+
+function getOptions(list: Array<Product>, key: keyof Product) {
+  const dict: Record<string, boolean> = {};
+  list.forEach((product) => (dict[product[key]] = true));
+  return Object.keys(dict);
+}
+
+function query(
+  list: Array<Product>,
+  targetKey: keyof Product,
+  queryParam: OptionObj
+) {
+  const { types, brands, colors, sizes } = queryParam;
+  const afterFilter: any = list.filter((item) => {
+    if (targetKey === "type") {
+      return isInclude(brands, item.brand) && isInclude(colors, item.color) && isInclude(sizes, item.size);
+    }
+    if (targetKey === "brand") {
+      return isInclude(types, item.type) && isInclude(colors, item.color) && isInclude(sizes, item.size);
+    }
+    if (targetKey === "color") {
+      return isInclude(types, item.type) && isInclude(brands, item.brand) && isInclude(sizes, item.size);
+    }
+    if (targetKey === "size") {
+      return isInclude(types, item.type) && isInclude(brands, item.brand) && isInclude(colors, item.color);
+    }
+  })
+    return getOptions(afterFilter, targetKey);
+}
+
+function getAllOption(list: Array<Product>, optionObj: OptionObj) {
+  const afterType = query(list, "type", optionObj);
+  const afterBrand = query(list, "brand", optionObj);
+  const afterColor = query(list, "color", optionObj);
+  const afterSize = query(list, "size", optionObj);
+  return {
+    typeOptions: afterType,
+    brandOptions: afterBrand,
+    colorOptions: afterColor,
+    sizeOptions: afterSize,
+  };
+}
+
 export interface FilterState {
   productList: Array<Product>;
   typeOptions: Array<string>;
   brandOptions: Array<string>;
   colorOptions: Array<string>;
   sizeOptions: Array<string>;
+  disaplyTypeOptions: Array<string>;
+  disaplyBrandOptions: Array<string>;
+  disaplyColorOptions: Array<string>;
+  disaplySizeOptions: Array<string>;
   activatedTypesDict: Record<string, boolean>;
   activatedBrandsDict: Record<string, boolean>;
   activatedColorsDict: Record<string, boolean>;
@@ -152,6 +209,10 @@ const initialState: FilterState = {
   brandOptions: [],
   colorOptions: [],
   sizeOptions: [],
+  disaplyTypeOptions: [],
+  disaplyBrandOptions: [],
+  disaplyColorOptions: [],
+  disaplySizeOptions: [],
   activatedTypesDict: {},
   activatedBrandsDict: {},
   activatedColorsDict: {},
@@ -211,8 +272,27 @@ export const filterSlice = createSlice({
         state.activatedSizesDict = dict;
       }
     },
+    filterOptions: (state) => {
+      const { typeOptions, brandOptions, colorOptions, sizeOptions } = getAllOption(current(state.productList), {
+        types: Object.keys(state.activatedTypesDict),
+        brands: Object.keys(state.activatedBrandsDict),
+        colors: Object.keys(state.activatedColorsDict),
+        sizes: Object.keys(state.activatedSizesDict),
+      });
+
+      state.disaplyTypeOptions = typeOptions;
+      state.disaplyBrandOptions = brandOptions;
+      state.disaplyColorOptions = colorOptions;
+      state.disaplySizeOptions = sizeOptions;
+    },
+    clearActivated: (state) => {
+      state.activatedTypesDict = {};
+      state.activatedBrandsDict = {};
+      state.activatedColorsDict = {};
+      state.activatedSizesDict = {};
+    }
   },
 });
 
-export const { initOptions, toggle } = filterSlice.actions;
+export const { initOptions, toggle, filterOptions, clearActivated } = filterSlice.actions;
 export default filterSlice.reducer;

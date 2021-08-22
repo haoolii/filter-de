@@ -20,16 +20,6 @@ export const Opt: React.FC<optProps> = ({ options, activatedDict, toggle }) => {
             <span>{option}</span>
           </label>
         ))}
-        <div className="saveBtn">
-          <button>Save</button>
-        </div>
-      </div>
-      <div className="activated">
-        {Object.keys(activatedDict).map((key) => (
-          <div className="activatedOption" key={key}>
-            {key}
-          </div>
-        ))}
       </div>
     </>
   );

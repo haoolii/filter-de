@@ -1,4 +1,4 @@
-.filter {
+.filter-opt {
     display: flex;
 }
 
@@ -13,6 +13,23 @@
     height: 300px;
     overflow: auto;
     padding: 12px;
+}
+
+.filter-origin {
+    display: flex;
+}
+
+.origin {
+    display: flex;
+    flex-direction: column;
+    width: 140px;
+    height: 220px;
+    overflow: auto;
+    padding: 12px;
+}
+
+.filter-activated {
+    display: flex;
 }
 
 .activated {
@@ -31,4 +48,11 @@
 
 .saveBtn button {
     width: 100%;
+}
+
+.btns {
+    display: flex;
+}
+.btns button {
+    width: 50%;
 }
