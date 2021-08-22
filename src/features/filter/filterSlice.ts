@@ -9,6 +9,25 @@ export interface Product {
   color: string;
 }
 
+function arrayToDict(list: Array<string>) {
+  const dict: Record<string, boolean> = {};
+  list.forEach(item => dict[item] = true)
+  return dict;
+}
+
+function unionDict(
+  firstDict: Record<string, boolean>,
+  SecondDict: Record<string, boolean>
+) {
+  const dict: Record<string, boolean> = {};
+  Object.keys(firstDict).forEach((firstKey) => {
+    if (firstDict[firstKey] && SecondDict[firstKey]) {
+      dict[firstKey] = true;
+    }
+  });
+  return dict;
+}
+
 function isInclude(arr: Array<string>, target: string) {
   return arr.length ? arr.includes(target) : true;
 }
@@ -46,19 +65,35 @@ function query(
   const { types, brands, colors, sizes } = queryParam;
   const afterFilter: any = list.filter((item) => {
     if (targetKey === "type") {
-      return isInclude(brands, item.brand) && isInclude(colors, item.color) && isInclude(sizes, item.size);
+      return (
+        isInclude(brands, item.brand) &&
+        isInclude(colors, item.color) &&
+        isInclude(sizes, item.size)
+      );
     }
     if (targetKey === "brand") {
-      return isInclude(types, item.type) && isInclude(colors, item.color) && isInclude(sizes, item.size);
+      return (
+        isInclude(types, item.type) &&
+        isInclude(colors, item.color) &&
+        isInclude(sizes, item.size)
+      );
     }
     if (targetKey === "color") {
-      return isInclude(types, item.type) && isInclude(brands, item.brand) && isInclude(sizes, item.size);
+      return (
+        isInclude(types, item.type) &&
+        isInclude(brands, item.brand) &&
+        isInclude(sizes, item.size)
+      );
     }
     if (targetKey === "size") {
-      return isInclude(types, item.type) && isInclude(brands, item.brand) && isInclude(colors, item.color);
+      return (
+        isInclude(types, item.type) &&
+        isInclude(brands, item.brand) &&
+        isInclude(colors, item.color)
+      );
     }
-  })
-    return getOptions(afterFilter, targetKey);
+  });
+  return getOptions(afterFilter, targetKey);
 }
 
 function getAllOption(list: Array<Product>, optionObj: OptionObj) {
@@ -76,18 +111,22 @@ function getAllOption(list: Array<Product>, optionObj: OptionObj) {
 
 export interface FilterState {
   productList: Array<Product>;
-  typeOptions: Array<string>;
+  typeOptions: Array<string>; // 原始選項
   brandOptions: Array<string>;
   colorOptions: Array<string>;
   sizeOptions: Array<string>;
-  disaplyTypeOptions: Array<string>;
+  disaplyTypeOptions: Array<string>; // 過濾後顯選項
   disaplyBrandOptions: Array<string>;
   disaplyColorOptions: Array<string>;
   disaplySizeOptions: Array<string>;
-  activatedTypesDict: Record<string, boolean>;
+  activatedTypesDict: Record<string, boolean>; // 勾選中的選項
   activatedBrandsDict: Record<string, boolean>;
   activatedColorsDict: Record<string, boolean>;
   activatedSizesDict: Record<string, boolean>;
+  validTypesDict: Record<string, boolean>; // 實際有效的選項
+  validBrandsDict: Record<string, boolean>;
+  validColorsDict: Record<string, boolean>;
+  validSizesDict: Record<string, boolean>;
 }
 
 const initialState: FilterState = {
@@ -217,6 +256,10 @@ const initialState: FilterState = {
   activatedBrandsDict: {},
   activatedColorsDict: {},
   activatedSizesDict: {},
+  validTypesDict: {},
+  validBrandsDict: {},
+  validColorsDict: {},
+  validSizesDict: {},
 };
 
 export const filterSlice = createSlice({
@@ -273,26 +316,33 @@ export const filterSlice = createSlice({
       }
     },
     filterOptions: (state) => {
-      const { typeOptions, brandOptions, colorOptions, sizeOptions } = getAllOption(current(state.productList), {
-        types: Object.keys(state.activatedTypesDict),
-        brands: Object.keys(state.activatedBrandsDict),
-        colors: Object.keys(state.activatedColorsDict),
-        sizes: Object.keys(state.activatedSizesDict),
-      });
+      const { typeOptions, brandOptions, colorOptions, sizeOptions } =
+        getAllOption(current(state.productList), {
+          types: Object.keys(state.activatedTypesDict),
+          brands: Object.keys(state.activatedBrandsDict),
+          colors: Object.keys(state.activatedColorsDict),
+          sizes: Object.keys(state.activatedSizesDict),
+        });
 
       state.disaplyTypeOptions = typeOptions;
       state.disaplyBrandOptions = brandOptions;
       state.disaplyColorOptions = colorOptions;
       state.disaplySizeOptions = sizeOptions;
+
+      state.validTypesDict = unionDict(state.activatedTypesDict, arrayToDict(typeOptions));
+      state.validBrandsDict = unionDict(state.activatedBrandsDict, arrayToDict(brandOptions));
+      state.validColorsDict = unionDict(state.activatedColorsDict, arrayToDict(colorOptions));
+      state.validSizesDict = unionDict(state.activatedSizesDict, arrayToDict(sizeOptions));
     },
     clearActivated: (state) => {
       state.activatedTypesDict = {};
       state.activatedBrandsDict = {};
       state.activatedColorsDict = {};
       state.activatedSizesDict = {};
-    }
+    },
   },
 });
 
-export const { initOptions, toggle, filterOptions, clearActivated } = filterSlice.actions;
+export const { initOptions, toggle, filterOptions, clearActivated } =
+  filterSlice.actions;
 export default filterSlice.reducer;

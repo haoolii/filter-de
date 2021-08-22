@@ -35,6 +35,26 @@ export const Filter: React.FC<filterProps> = () => {
     Record<string, boolean>
   >(({ filter }) => filter.activatedSizesDict);
 
+  const validTypesDict = useSelector<
+    { filter: FilterState },
+    Record<string, boolean>
+  >(({ filter }) => filter.validTypesDict);
+
+  const validBrandsDict = useSelector<
+    { filter: FilterState },
+    Record<string, boolean>
+  >(({ filter }) => filter.validBrandsDict);
+
+  const validColorsDict = useSelector<
+    { filter: FilterState },
+    Record<string, boolean>
+  >(({ filter }) => filter.validColorsDict);
+
+  const validSizesDict = useSelector<
+    { filter: FilterState },
+    Record<string, boolean>
+  >(({ filter }) => filter.validSizesDict);
+
   const typeOptions = useSelector<{ filter: FilterState }, Array<string>>(
     ({ filter }) => filter.typeOptions
   );
@@ -141,7 +161,7 @@ export const Filter: React.FC<filterProps> = () => {
         <button onClick={() => clear()}>Clear</button>
         <button onClick={() => dispatch(filterOptions())}>Save</button>
       </div>
-      <h1>選取中啟用</h1>
+      <h1>選取的選項</h1>
       <div className="filter-activated">
         <div className="tab">
           <Activated activatedDict={activatedTypesDict}></Activated>
@@ -154,6 +174,21 @@ export const Filter: React.FC<filterProps> = () => {
         </div>
         <div className="tab">
           <Activated activatedDict={activatedSizesDict}></Activated>
+        </div>
+      </div>
+      <h1>有效的選項</h1>
+      <div className="filter-activated">
+        <div className="tab">
+          <Activated activatedDict={validTypesDict}></Activated>
+        </div>
+        <div className="tab">
+          <Activated activatedDict={validBrandsDict}></Activated>
+        </div>
+        <div className="tab">
+          <Activated activatedDict={validColorsDict}></Activated>
+        </div>
+        <div className="tab">
+          <Activated activatedDict={validSizesDict}></Activated>
         </div>
       </div>
     </div>
