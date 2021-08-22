@@ -1,58 +1,64 @@
 .filter-opt {
-    display: flex;
+  display: flex;
 }
 
 .tab {
-    
 }
 
 .opt {
-    display: flex;
-    flex-direction: column;
-    width: 140px;
-    height: 220px;
-    overflow: auto;
-    padding: 12px;
+  display: flex;
+  flex-direction: column;
+  width: 140px;
+  height: 220px;
+  overflow: auto;
+  padding: 12px;
 }
 
 .filter-origin {
-    display: flex;
+  display: flex;
 }
 
 .origin {
-    display: flex;
-    flex-direction: column;
-    width: 140px;
-    height: 220px;
-    overflow: auto;
-    padding: 12px;
+  display: flex;
+  flex-direction: column;
+  width: 140px;
+  height: 220px;
+  overflow: auto;
+  padding: 12px;
 }
 
 .filter-activated {
-    display: flex;
+  display: flex;
 }
 
 .activated {
-    display: flex;
-    flex-direction: column;
-    width: 140px;
-    height: 220px;
-    overflow: auto;
-    padding: 12px;
+  display: flex;
+  flex-direction: column;
+  width: 140px;
+  height: 220px;
+  overflow: auto;
+  padding: 12px;
 }
 
 .saveBtn {
-    padding-top: 20px;
-    margin-top: auto;
+  padding-top: 20px;
+  margin-top: auto;
 }
 
 .saveBtn button {
-    width: 100%;
+  width: 100%;
 }
 
 .btns {
-    display: flex;
+  display: flex;
 }
 .btns button {
-    width: 50%;
+  width: 50%;
+}
+
+.flex {
+  display: flex;
+}
+.w-50 {
+  width: 50%;
 }

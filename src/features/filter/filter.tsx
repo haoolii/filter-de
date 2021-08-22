@@ -102,93 +102,97 @@ export const Filter: React.FC<filterProps> = () => {
   }, []);
 
   return (
-    <div>
-      <h1>原始選項</h1>
-      <div className="filter-origin">
-        <div className="tab">
-          <Origin options={typeOptions}></Origin>
+    <div className="flex">
+      <div className="w-50">
+        <h1>原始選項</h1>
+        <div className="filter-origin">
+          <div className="tab">
+            <Origin options={typeOptions}></Origin>
+          </div>
+          <div className="tab">
+            <Origin options={brandOptions}></Origin>
+          </div>
+          <div className="tab">
+            <Origin options={colorOptions}></Origin>
+          </div>
+          <div className="tab">
+            <Origin options={sizeOptions}></Origin>
+          </div>
         </div>
-        <div className="tab">
-          <Origin options={brandOptions}></Origin>
+        <h1>實際顯示</h1>
+        <div className="filter-opt">
+          <div className="tab">
+            <Opt
+              options={displayTypeOptions}
+              activatedDict={activatedTypesDict}
+              toggle={(option) =>
+                dispatch(toggle({ option, optionType: "type" }))
+              }
+            ></Opt>
+          </div>
+          <div className="tab">
+            <Opt
+              options={displayBrandOptions}
+              activatedDict={activatedBrandsDict}
+              toggle={(option) =>
+                dispatch(toggle({ option, optionType: "brand" }))
+              }
+            ></Opt>
+          </div>
+          <div className="tab">
+            <Opt
+              options={displayColorOptions}
+              activatedDict={activatedColorsDict}
+              toggle={(option) =>
+                dispatch(toggle({ option, optionType: "color" }))
+              }
+            ></Opt>
+          </div>
+          <div className="tab">
+            <Opt
+              options={displaySizeOptions}
+              activatedDict={activatedSizesDict}
+              toggle={(option) =>
+                dispatch(toggle({ option, optionType: "size" }))
+              }
+            ></Opt>
+          </div>
         </div>
-        <div className="tab">
-          <Origin options={colorOptions}></Origin>
-        </div>
-        <div className="tab">
-          <Origin options={sizeOptions}></Origin>
-        </div>
-      </div>
-      <h1>實際顯示</h1>
-      <div className="filter-opt">
-        <div className="tab">
-          <Opt
-            options={displayTypeOptions}
-            activatedDict={activatedTypesDict}
-            toggle={(option) =>
-              dispatch(toggle({ option, optionType: "type" }))
-            }
-          ></Opt>
-        </div>
-        <div className="tab">
-          <Opt
-            options={displayBrandOptions}
-            activatedDict={activatedBrandsDict}
-            toggle={(option) =>
-              dispatch(toggle({ option, optionType: "brand" }))
-            }
-          ></Opt>
-        </div>
-        <div className="tab">
-          <Opt
-            options={displayColorOptions}
-            activatedDict={activatedColorsDict}
-            toggle={(option) =>
-              dispatch(toggle({ option, optionType: "color" }))
-            }
-          ></Opt>
-        </div>
-        <div className="tab">
-          <Opt
-            options={displaySizeOptions}
-            activatedDict={activatedSizesDict}
-            toggle={(option) =>
-              dispatch(toggle({ option, optionType: "size" }))
-            }
-          ></Opt>
-        </div>
-      </div>
-      <div className="btns">
-        <button onClick={() => clear()}>Clear</button>
-        <button onClick={() => dispatch(filterOptions())}>Save</button>
-      </div>
-      <h1>選取的選項</h1>
-      <div className="filter-activated">
-        <div className="tab">
-          <Activated activatedDict={activatedTypesDict}></Activated>
-        </div>
-        <div className="tab">
-          <Activated activatedDict={activatedBrandsDict}></Activated>
-        </div>
-        <div className="tab">
-          <Activated activatedDict={activatedColorsDict}></Activated>
-        </div>
-        <div className="tab">
-          <Activated activatedDict={activatedSizesDict}></Activated>
+        <div className="btns">
+          <button onClick={() => clear()}>Clear</button>
+          <button onClick={() => dispatch(filterOptions())}>Save</button>
         </div>
       </div>
-      <h1>有效的選項</h1>
-      <div className="filter-activated">
-        <div className="tab">
-          <Activated activatedDict={validTypesDict}></Activated>
+      <div className="w-50">
+        <h1>選取的選項</h1>
+        <div className="filter-activated">
+          <div className="tab">
+            <Activated activatedDict={activatedTypesDict}></Activated>
+          </div>
+          <div className="tab">
+            <Activated activatedDict={activatedBrandsDict}></Activated>
+          </div>
+          <div className="tab">
+            <Activated activatedDict={activatedColorsDict}></Activated>
+          </div>
+          <div className="tab">
+            <Activated activatedDict={activatedSizesDict}></Activated>
+          </div>
         </div>
-        <div className="tab">
-          <Activated activatedDict={validBrandsDict}></Activated>
-        </div>
-        <div className="tab">
-          <Activated activatedDict={validColorsDict}></Activated>
-        </div>
-        <div className="tab">
-          <Activated activatedDict={validSizesDict}></Activated>
+        <h1>有效的選項</h1>
+        <div className="filter-activated">
+          <div className="tab">
+            <Activated activatedDict={validTypesDict}></Activated>
+          </div>
+          <div className="tab">
+            <Activated activatedDict={validBrandsDict}></Activated>
+          </div>
+          <div className="tab">
+            <Activated activatedDict={validColorsDict}></Activated>
+          </div>
+          <div className="tab">
+            <Activated activatedDict={validSizesDict}></Activated>
+          </div>
         </div>
       </div>
     </div>
